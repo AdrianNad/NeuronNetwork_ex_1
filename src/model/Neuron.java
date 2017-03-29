@@ -38,6 +38,7 @@ public class Neuron
 		Double sum = 0.0;
 		for (int i=0; i<inputConnections.size(); i++)
 		{
+			System.out.println("ROZMIAR " +inputConnections.size() + " SUMA " + sum + " ITERACJA " + i);
 			sum += inputConnections.get(i).getOutput()*weights.get(i);
 		}
 		return sum;
@@ -50,7 +51,6 @@ public class Neuron
 	{
 		super();
 		initializeLists();
-
 	}
 	public void initializeLists()
 	{
@@ -66,11 +66,16 @@ public class Neuron
 			weights.add(Math.random()*0.5);
 		}
 	}
-	Neuron (Input input) // it's for a layer which will be the input of the whole network
+	public Neuron (Input input) // it's for a layer which will be the input of the whole network
 	{
+		initializeLists();
 		addInputConnection(input);
 		weights.add(1.0);
 		input.setOutputNeuron(this);
+	}
+	public void clearInputs()
+	{
+		inputConnections.clear();
 	}
 //	public Neuron(Double[] valuesToCopy)
 //	{

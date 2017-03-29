@@ -47,7 +47,18 @@ public class NeuronNetwork
 			layers.get(i).connect(layers.get(i-1));
 		}
 	}
-	public void createInputLayer()
+	public void recreateInputConnection()
+	{
+		if(layers.size() > 1)
+		{
+			for (Neuron current : layers.get(1).getNeurons())
+			{
+				current.clearInputs();
+			}
+			layers.get(1).connect(layers.get(0));
+		}
+	}
+	public void setNewInput()
 	{
 		Layer inputLayer = new Layer();
 		for (int i=0; i<inputs.size();i++)
@@ -57,6 +68,7 @@ public class NeuronNetwork
 			inputLayer.addNeuron(neuron);
 		}
 		layers.set(0, inputLayer);
+		recreateInputConnection();
 	}
 	public double[] getOutput()
 	{

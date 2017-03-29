@@ -9,10 +9,13 @@ public class Input extends Connection
 	{
 		return input;
 	}
-	Input(double input)
+	public Input(double input)
 	{
 		super();
 		this.input = input;
 	}
+	public Input()
+	{
 
+	}
 }
