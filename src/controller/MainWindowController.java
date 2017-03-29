@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ import java.util.Vector;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import model.Input;
 import model.Layer;
@@ -27,6 +27,8 @@ public class MainWindowController
 	private Button buttonLoadData;
 	public NeuronNetwork network;
 	@FXML
+	public TableView<NeuronNetwork> tableViewNetwork;
+	@FXML
 	public void buttonAddPressed()
 	{
 		int count = Integer.parseInt(textFieldNeuronsCount.getText());
@@ -40,6 +42,16 @@ public class MainWindowController
 		network.addLayer(newLayer);
 		network.createAllConnections();
 		network.generateWeights();
+	}
+	@FXML
+	public void fillTable()
+	{
+		for (int i=0; i<network.getLayers().size();i++)
+		{
+			System.out.println("Warstwa " + i);
+			System.out.println("MA " + network.getLayers().get(i).getNeurons().size() + " NEURONOW");
+			System.out.println("MAJA ONE " + network.getLayers().get(i).getNeurons().get(0).getInputConnections().size() + "polaczen");
+		}
 	}
 	@FXML
 	public void initialize()
@@ -103,6 +115,6 @@ public class MainWindowController
 			System.out.println(hahax[3]);
 			System.out.println("PRZERWA");
 		}
-
+		fillTable();
 	}
 }

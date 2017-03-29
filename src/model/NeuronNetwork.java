@@ -44,6 +44,10 @@ public class NeuronNetwork
 	{
 		for(int i=1; i<layers.size(); i++)
 		{
+			for (Neuron current : layers.get(i).getNeurons())
+			{
+				current.clearInputs();
+			}
 			layers.get(i).connect(layers.get(i-1));
 		}
 	}
