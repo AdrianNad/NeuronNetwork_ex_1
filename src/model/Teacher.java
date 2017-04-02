@@ -68,7 +68,7 @@ public class Teacher
 	{
 		List<Double> inputValues ;
 		double maxError = 10000;
-		for (int j=0; j<centuryLimit || maxError > possibleError; j++)
+		for (int j=0; j<centuryLimit && maxError > possibleError; j++)
 		{
 			System.out.println("Epoka " + (j+1) + " : ");
 			for (int i=0; i<trainingData.size();i++)
