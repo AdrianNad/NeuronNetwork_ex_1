@@ -35,7 +35,7 @@ public class Layer
 			for(Neuron input: lowerLayer.getNeurons())
 			{
 				new Connection(input, output);
-				System.out.println("OUTPUTY : " + output.getInputConnections().size());
+				//System.out.println("OUTPUTY : " + output.getInputConnections().size());
 			}
 		}
 	}

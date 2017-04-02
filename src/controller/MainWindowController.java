@@ -15,10 +15,13 @@ import model.Input;
 import model.Layer;
 import model.Neuron;
 import model.NeuronNetwork;
+import model.Teacher;
+import model.TrainingData;
 
 public class MainWindowController
 {
-	List<Layer> listOfLayers = new ArrayList<Layer>();
+	private List<Layer> listOfLayers = new ArrayList<Layer>();
+	private Teacher teacher = new Teacher(0.01, 100000, 0.6);
 	@FXML
 	private TextField textFieldNeuronsCount;
 	@FXML
@@ -46,12 +49,12 @@ public class MainWindowController
 	@FXML
 	public void fillTable()
 	{
-		for (int i=0; i<network.getLayers().size();i++)
-		{
-			System.out.println("Warstwa " + i);
-			System.out.println("MA " + network.getLayers().get(i).getNeurons().size() + " NEURONOW");
-			System.out.println("MAJA ONE " + network.getLayers().get(i).getNeurons().get(0).getInputConnections().size() + "polaczen");
-		}
+//		for (int i=0; i<network.getLayers().size();i++)
+//		{
+//			System.out.println("Warstwa " + i);
+//			System.out.println("MA " + network.getLayers().get(i).getNeurons().size() + " NEURONOW");
+//			System.out.println("MAJA ONE " + network.getLayers().get(i).getNeurons().get(0).getInputConnections().size() + "polaczen");
+//		}
 	}
 	@FXML
 	public void initialize()
@@ -73,10 +76,12 @@ public class MainWindowController
 		Layer inputLayer = new Layer();
 		inputLayer.setNeurons(neurons);
 		network.addLayer(inputLayer);
+		teacher.setNetwork(network);
 	}
 	@FXML
 	public void buttonLoadDataPressed()
 	{
+		teacher.clearTrainingData();
 		Vector<Double> inputValues = new Vector<Double>();
 		try
 		{
@@ -98,23 +103,28 @@ public class MainWindowController
 				System.out.println("File Read Error");
 				e.printStackTrace();
 			}
-		List<Double> haha ;
+//		List<Double> haha ;
 		for (int i=0; i<inputValues.size();i=i+4)
 		{
-			haha = new ArrayList<Double>();
-			haha.add(inputValues.get(i));
-			haha.add(inputValues.get(i+1));
-			haha.add(inputValues.get(i+2));
-			haha.add(inputValues.get(i+3));
-			network.setInputs(haha);
-			network.setNewInput();
-			double[] hahax = network.getOutput();
-			System.out.println(hahax[0]);
-			System.out.println(hahax[1]);
-			System.out.println(hahax[2]);
-			System.out.println(hahax[3]);
-			System.out.println("PRZERWA");
+			Double[] trainingValues = new Double[]{inputValues.get(i), inputValues.get(i+1), inputValues.get(i+2), inputValues.get(i+3)};
+			teacher.addTrainingData(new TrainingData(trainingValues, trainingValues));
+			//System.out.println("TRAINING DATA " + teacher.getTrainingData().size());
+//			haha = new ArrayList<Double>();
+//			haha.add(inputValues.get(i));
+//			haha.add(inputValues.get(i+1));
+//			haha.add(inputValues.get(i+2));
+//			haha.add(inputValues.get(i+3));
+//			network.setInputs(haha);
+//			network.setNewInput();
+//			double[] hahax = network.getOutput();
+//			System.out.println(hahax[0]);
+//			System.out.println(hahax[1]);
+//			System.out.println(hahax[2]);
+//			System.out.println(hahax[3]);
+//			System.out.println("PRZERWA");
 		}
+		//System.out.println(inputValues.size());
+		teacher.teach();
 		fillTable();
 	}
 }

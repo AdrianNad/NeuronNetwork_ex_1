@@ -1,5 +1,8 @@
 package model;
 
+import static java.lang.Math.exp;
+import static java.lang.Math.pow;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +11,24 @@ public class Neuron
 	private List<Connection> inputConnections;
 	private List<Connection> outputConnections;
 	private List<Double> weights;
+	private double error;
 
+	public List<Double> getWeights()
+	{
+		return weights;
+	}
+	public void setWeights(List<Double> weights)
+	{
+		this.weights = weights;
+	}
+	public double getError()
+	{
+		return error;
+	}
+	public void setError(double error)
+	{
+		this.error = error;
+	}
 	public List<Connection> getInputConnections()
 	{
 		return inputConnections;
@@ -33,19 +53,34 @@ public class Neuron
 	{
 		outputConnections.add(conn);
 	}
-	public double sum()
+	public double getSum()
 	{
 		Double sum = 0.0;
 		for (int i=0; i<inputConnections.size(); i++)
 		{
-			System.out.println("ROZMIAR " +inputConnections.size() + " SUMA " + sum + " ITERACJA " + i);
+			//System.out.println("ROZMIAR " +inputConnections.size() + " SUMA " + sum + " ITERACJA " + i);
 			sum += inputConnections.get(i).getOutput()*weights.get(i);
 		}
 		return sum;
 	}
 	public double getOutput()
 	{
-		return sum(); // TU MA BYC FUNKCJA AKTYWACJI Z SUMY POWYZEJ
+		if (inputConnections.get(0) instanceof Input)
+		{
+			return getSum();
+		}
+		else
+		{
+			return getActivationFunctionValue(getSum()); // TU MA BYC FUNKCJA AKTYWACJI Z SUMY POWYZEJ
+		}
+	}//INPUTY OVERRIDE
+	public double getActivationFunctionValue(double x)
+	{
+			return 1/(1 + exp(-x));
+	}
+	public double getDerivativeActivationFunctionValue(double x)
+	{
+		return exp(x)/pow(exp(x) + 1, 2);
 	}
 	public Neuron()
 	{
@@ -63,7 +98,7 @@ public class Neuron
 		weights.clear();
 		for (int i=0; i<inputConnections.size(); i++)
 		{
-			weights.add(Math.random()*0.5);
+			weights.add(Math.random()-0.5);
 		}
 	}
 	public Neuron (Input input) // it's for a layer which will be the input of the whole network
@@ -76,6 +111,10 @@ public class Neuron
 	public void clearInputs()
 	{
 		inputConnections.clear();
+	}
+	public void clearOutputs()
+	{
+		outputConnections.clear();
 	}
 //	public Neuron(Double[] valuesToCopy)
 //	{

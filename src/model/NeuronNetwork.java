@@ -47,6 +47,7 @@ public class NeuronNetwork
 			for (Neuron current : layers.get(i).getNeurons())
 			{
 				current.clearInputs();
+				current.clearOutputs();
 			}
 			layers.get(i).connect(layers.get(i-1));
 		}
@@ -76,14 +77,17 @@ public class NeuronNetwork
 	}
 	public double[] getOutput()
 	{
+
 		double[] output = new double[layers.get(layers.size() - 1).getNeurons().size()];
 		for(int i=0; i<output.length; i++)
 		{
 			Neuron neuron = layers.get(layers.size() - 1).getNeurons().get(i);
 			output[i] = neuron.getOutput();
+
 		}
 		return output;
 	}
+
 //	public void setInputsAndCreateInputLayer(List<Double> inputs) // DODAC REMOVE CONNECTIONS W LAYER I ZROBIC TO NA TEJ Z INDEXEM 1
 //	{
 //		setInputs(inputs);
