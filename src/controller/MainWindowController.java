@@ -21,7 +21,7 @@ import model.TrainingData;
 public class MainWindowController
 {
 	private List<Layer> listOfLayers = new ArrayList<Layer>();
-	private Teacher teacher = new Teacher(0.01, 100000, 0.6);
+	private Teacher teacher = new Teacher(0.01, 200000, 0.6);
 	@FXML
 	private TextField textFieldNeuronsCount;
 	@FXML

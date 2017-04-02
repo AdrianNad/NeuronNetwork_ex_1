@@ -129,6 +129,11 @@ public class Teacher
 				{
 					System.out.println(current);
 				}
+
+				for (Double current : trainingData.get(i).getOutput())
+				{
+					System.out.println("SPODZIEWANE " + current);
+				}
 				double[] errors = new double[trainingData.size()];
 				errors[i] = Math.abs(out[0] - trainingData.get(i).getOutput()[0]);
 				for (int k = 0; k < out.length; k++)
