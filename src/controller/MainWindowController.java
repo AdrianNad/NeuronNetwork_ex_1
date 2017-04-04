@@ -21,7 +21,7 @@ import model.TrainingData;
 public class MainWindowController
 {
 	private List<Layer> listOfLayers = new ArrayList<Layer>();
-	private Teacher teacher = new Teacher(0.01, 100000, 0.6);
+	private Teacher teacher = new Teacher(0.01, 1000000, 0.2);
 	@FXML
 	private TextField textFieldNeuronsCount;
 	@FXML
@@ -106,7 +106,7 @@ public class MainWindowController
 //		List<Double> haha ;
 		for (int i=0; i<inputValues.size();i=i+4)
 		{
-			Double[] trainingValues = new Double[]{inputValues.get(i), inputValues.get(i+1), inputValues.get(i+2), inputValues.get(i+3)};
+			double[] trainingValues = new double[]{inputValues.get(i), inputValues.get(i+1), inputValues.get(i+2), inputValues.get(i+3)};
 			teacher.addTrainingData(new TrainingData(trainingValues, trainingValues));
 			//System.out.println("TRAINING DATA " + teacher.getTrainingData().size());
 //			haha = new ArrayList<Double>();

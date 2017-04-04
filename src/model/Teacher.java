@@ -66,16 +66,20 @@ public class Teacher
 	}
 	public void teach()
 	{
+		double[] out=new double[4];
 		List<Double> inputValues ;
 		double maxError = 10000;
 		for (int j=0; j<centuryLimit && maxError > possibleError; j++)
 		{
+			double[] errors = new double[trainingData.size()];
 			System.out.println("Epoka " + (j+1) + " : ");
 			for (int i=0; i<trainingData.size();i++)
 			{
+				double[] trainingInput = trainingData.get(i).getInput();
+				double[] trainingOutput = trainingData.get(i).getOutput();
 				System.out.println("Dane wejsciowe: " + (i+1));
 				inputValues = new ArrayList<Double>();
-				for (Double current : trainingData.get(i).getInput())
+				for (Double current : trainingInput)
 				{
 					inputValues.add(current);
 				}
@@ -91,7 +95,7 @@ public class Teacher
 				for (int k = 0; k < lastLayer.getNeurons().size(); k++)
 				{
 					Neuron neuron = lastLayer.getNeurons().get(k);
-					neuron.setError(neuron.getDerivativeActivationFunctionValue(neuron.getSum()) * (trainingData.get(i).getOutput()[k] - output[k]));
+					neuron.setError(neuron.getDerivativeActivationFunctionValue(neuron.getSum()) * (trainingOutput[k] - output[k]));
 				}
 
 				// hidden
@@ -117,27 +121,34 @@ public class Teacher
 					for (int l = 0; l < layer.getNeurons().size(); l++)
 					{
 						Neuron neuron = layer.getNeurons().get(l);
-						for (int m=0; m<neuron.getWeights().size(); m++)
+						for (int m=0; m<neuron.getInputConnections().size(); m++)
 						{
 							neuron.getWeights().set(m, neuron.getWeights().get(m) + step * neuron.getError() * neuron.getInputConnections().get(m).getInputNeuron().getOutput());
+							//neuron.getInputConnections().get(m).getInputNeuron().getWeights().set(l, neuron.getInputConnections().get(m).getInputNeuron().getWeights().get(l) + step * neuron.getError()* neuron.getInputConnections().get(m).getInputNeuron().getOutput());
 						}
 					}
 				}
 
-				double[] out = network.getOutput();
+				out = network.getOutput();
+//				System.out.println("Inputy: ");
+//				for (Neuron current : network.getLayers().get(0).getNeurons())
+//				{
+//					System.out.println(current.getOutput());
+//				}
+				System.out.println("Outputy: ");
 				for (Double current : out)
 				{
 					System.out.println(current);
 				}
-				double[] errors = new double[trainingData.size()];
-				errors[i] = Math.abs(out[0] - trainingData.get(i).getOutput()[0]);
+				errors[i] = Math.abs(out[0] - trainingOutput[0]);
 				for (int k = 0; k < out.length; k++)
 				{
-					if (errors[i] < Math.abs(out[k] - trainingData.get(i).getOutput()[k]))
+					if (errors[i] < Math.abs(out[k] - trainingOutput[0]))
 					{
-						errors[i] = Math.abs(out[k] -trainingData.get(i).getOutput()[k]);
+						errors[i] = Math.abs(out[k] -trainingOutput[0]);
 					}
 				}
+			}
 					maxError = errors[0];
 					for (int k = 1; k < errors.length; k++)
 					{
@@ -145,8 +156,7 @@ public class Teacher
 						{
 							maxError = errors[k];
 						}
-				}
+					}
 			}
 		}
-	}
 }

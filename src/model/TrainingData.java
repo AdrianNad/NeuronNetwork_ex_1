@@ -2,27 +2,27 @@ package model;
 
 public class TrainingData
 {
-	public Double[] input;
-	public Double[] output;
-	public TrainingData(Double[] input, Double[] output)
+	public double[] input;
+	public double[] output;
+	public TrainingData(double[] input, double[] output)
 	{
 		super();
 		this.input = input;
 		this.output = output;
 	}
-	public Double[] getInput()
+	public double[] getInput()
 	{
 		return input;
 	}
-	public void setInput(Double[] input)
+	public void setInput(double[] input)
 	{
 		this.input = input;
 	}
-	public Double[] getOutput()
+	public double[] getOutput()
 	{
 		return output;
 	}
-	public void setOutput(Double[] output)
+	public void setOutput(double[] output)
 	{
 		this.output = output;
 	}
