@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javafx.fxml.FXML;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -33,6 +34,8 @@ public class MainWindowController
 	public TableView<NeuronNetwork> tableViewNetwork;
 	@FXML
 	private Button buttonAddBias;
+	@FXML
+	private LineChart lineChartError;
 	@FXML
 	public void buttonAddBiasPressed()
 	{

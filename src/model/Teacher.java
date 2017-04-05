@@ -67,6 +67,7 @@ public class Teacher
 	}
 	public void teach()
 	{
+		double mseSum;
 		List<Double> inputValues ;
 		double maxError = 10000;
 		for (int j=0; j<centuryLimit && maxError > possibleError; j++)
@@ -74,6 +75,7 @@ public class Teacher
 //			Collections.shuffle(trainingData);
 			double[] errors = new double[trainingData.size()];
 			System.out.println("Epoka " + (j+1) + " : ");
+			mseSum = 0.0;
 			for (int i=0; i<trainingData.size();i++)
 			{
 				double[] trainingInput = trainingData.get(i).getInput();
@@ -148,7 +150,13 @@ public class Teacher
 						errors[i] = Math.abs(output[k] - trainingOutput[k]);
 					}
 				}
+				for (int k = 0; k< lastLayer.getNeurons().size(); k++)
+				{
+					mseSum += Math.pow(output[k] - trainingOutput[k], 2);
+				}
 			}
+			double mseValue = mseSum / 16.0;
+			System.out.println("Blad sredniokwadratowy po epoce: " + mseValue);
 					maxError = errors[0];
 					for (int k = 1; k < errors.length; k++)
 					{
