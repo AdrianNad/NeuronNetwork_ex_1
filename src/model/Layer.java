@@ -8,6 +8,13 @@ public class Layer
 {
 	private List<Neuron> neurons = new ArrayList<Neuron>();
 
+	public void initializeMomentum()
+	{
+		for(Neuron current : neurons)
+		{
+			current.fillPreviousChanges();
+		}
+	}
 	public List<Neuron> getNeurons()
 	{
 		return neurons;

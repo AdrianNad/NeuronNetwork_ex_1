@@ -1,8 +1,11 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import org.jfree.data.xy.XYSeries;
+
+import controller.MainWindowController;
 
 public class Teacher
 {
@@ -11,6 +14,26 @@ public class Teacher
 	private double step;
 	private double possibleError;
 	private int centuryLimit;
+	private double momentumStep;
+
+	public double getMomentumStep()
+	{
+		return momentumStep;
+	}
+	public void setMomentumStep(double momentumStep)
+	{
+		this.momentumStep = momentumStep;
+	}
+	MainWindowController controller;
+
+	public MainWindowController getController()
+	{
+		return controller;
+	}
+	public void setController(MainWindowController controller)
+	{
+		this.controller = controller;
+	}
 	public NeuronNetwork getNetwork()
 	{
 		return network;
@@ -58,21 +81,23 @@ public class Teacher
 		step = 0.6;
 	}
 
-	public Teacher(double possibleError, int centuryLimit, double step)
+	public Teacher(double possibleError, int centuryLimit, double step, double momentumStep)
 	{
 		super();
 		this.possibleError = possibleError;
 		this.centuryLimit = centuryLimit;
 		this.step = step;
+		this.momentumStep = momentumStep;
 	}
 	public void teach()
 	{
+		double[] tmpMomentum;
+		XYSeries series = new XYSeries("Wykres bledow");
 		double mseSum;
 		List<Double> inputValues ;
 		double maxError = 10000;
 		for (int j=0; j<centuryLimit && maxError > possibleError; j++)
 		{
-//			Collections.shuffle(trainingData);
 			double[] errors = new double[trainingData.size()];
 			System.out.println("Epoka " + (j+1) + " : ");
 			mseSum = 0.0;
@@ -89,10 +114,6 @@ public class Teacher
 				network.setInputs(inputValues);
 				network.setNewInput();
 				double[] output = network.getOutput();
-//				System.out.println(output[0]);
-//				System.out.println(output[1]);
-//				System.out.println(output[2]);
-//				System.out.println(output[3]);
 
 				Layer lastLayer = network.getLayers().get((network.getLayers().size()-1));
 				for (int k = 0; k < lastLayer.getNeurons().size(); k++)
@@ -101,7 +122,6 @@ public class Teacher
 					neuron.setError(neuron.getDerivativeActivationFunctionValue(neuron.getSum()) * (trainingOutput[k] - output[k]));
 				}
 
-				// hidden
 				for (int k = network.getLayers().size() - 2; k > 0; k--)
 				{
 					Layer layer = network.getLayers().get(k);
@@ -117,21 +137,24 @@ public class Teacher
 						neuron.setError(neuron.getDerivativeActivationFunctionValue(neuron.getSum())* sum);
 					}
 				}
-				// weights
+
 				for (int k = network.getLayers().size() - 1; k > 0; k--)
 				{
 					Layer layer = network.getLayers().get(k);
 					for (int l = 0; l < layer.getNeurons().size(); l++)
 					{
 						Neuron neuron = layer.getNeurons().get(l);
+						tmpMomentum = new double[neuron.getWeights().size()];
+						double weightChange;
 						for (int m=0; m<neuron.getInputConnections().size(); m++)
 						{
-							neuron.getWeights().set(m, neuron.getWeights().get(m) + step * neuron.getError() * neuron.getInputConnections().get(m).getInputNeuron().getOutput());
+							weightChange = step * neuron.getError() * neuron.getInputConnections().get(m).getInputNeuron().getOutput() + momentumStep * neuron.getPreviousChanges().get(m);
+							neuron.getWeights().set(m, neuron.getWeights().get(m) + weightChange);
+							neuron.getPreviousChanges().set(m, weightChange);
 							//neuron.getInputConnections().get(m).getInputNeuron().getWeights().set(l, neuron.getInputConnections().get(m).getInputNeuron().getWeights().get(l) + step * neuron.getError()* neuron.getInputConnections().get(m).getInputNeuron().getOutput());
 						}
 					}
 				}
-
 //				System.out.println("Inputy: ");
 //				for (Neuron current : network.getLayers().get(0).getNeurons())
 //				{
@@ -157,14 +180,16 @@ public class Teacher
 			}
 			double mseValue = mseSum / 16.0;
 			System.out.println("Blad sredniokwadratowy po epoce: " + mseValue);
-					maxError = errors[0];
-					for (int k = 1; k < errors.length; k++)
+			maxError = errors[0];
+				for (int k = 1; k < errors.length; k++)
+				{
+					if (maxError < errors[k])
 					{
-						if (maxError < errors[k])
-						{
-							maxError = errors[k];
-						}
+						maxError = errors[k];
 					}
+				}
+			series.add(j,mseValue);
+			controller.setSeries(series);
 			}
 		}
 }

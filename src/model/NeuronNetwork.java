@@ -75,6 +75,13 @@ public class NeuronNetwork
 		layers.set(0, inputLayer);
 		recreateInputConnection();
 	}
+	public void initializeMomentum()
+	{
+		for (Layer current : layers)
+		{
+			current.initializeMomentum();
+		}
+	}
 	public double[] getOutput()
 	{
 

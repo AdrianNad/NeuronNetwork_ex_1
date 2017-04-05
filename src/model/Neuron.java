@@ -11,6 +11,24 @@ public class Neuron
 	private List<Connection> inputConnections;
 	private List<Connection> outputConnections;
 	private List<Double> weights;
+	private List<Double> previousChanges;
+
+	public void fillPreviousChanges()
+	{
+		previousChanges.clear();
+		for(int i=0; i<weights.size();i++)
+		{
+			previousChanges.add(0.0);
+		}
+	}
+	public List<Double> getPreviousChanges()
+	{
+		return previousChanges;
+	}
+	public void setPreviousChanges(List<Double> previousChanges)
+	{
+		this.previousChanges = previousChanges;
+	}
 	private double error;
 
 	public List<Double> getWeights()
@@ -90,6 +108,7 @@ public class Neuron
 	public void initializeLists()
 	{
 		weights = new ArrayList<Double>();
+		previousChanges = new ArrayList<Double>();
 		inputConnections = new ArrayList<Connection>();
 		outputConnections = new ArrayList<Connection>();
 	}
