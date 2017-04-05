@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Teacher
@@ -66,11 +67,11 @@ public class Teacher
 	}
 	public void teach()
 	{
-		double[] out=new double[4];
 		List<Double> inputValues ;
 		double maxError = 10000;
 		for (int j=0; j<centuryLimit && maxError > possibleError; j++)
 		{
+//			Collections.shuffle(trainingData);
 			double[] errors = new double[trainingData.size()];
 			System.out.println("Epoka " + (j+1) + " : ");
 			for (int i=0; i<trainingData.size();i++)
@@ -99,7 +100,7 @@ public class Teacher
 				}
 
 				// hidden
-				for (int k = network.getLayers().size() - 2; k > 1; k--)
+				for (int k = network.getLayers().size() - 2; k > 0; k--)
 				{
 					Layer layer = network.getLayers().get(k);
 					for (int l = 0; l < layer.getNeurons().size(); l++)
@@ -115,7 +116,7 @@ public class Teacher
 					}
 				}
 				// weights
-				for (int k = network.getLayers().size() - 1; k > 1; k--)
+				for (int k = network.getLayers().size() - 1; k > 0; k--)
 				{
 					Layer layer = network.getLayers().get(k);
 					for (int l = 0; l < layer.getNeurons().size(); l++)
@@ -129,23 +130,22 @@ public class Teacher
 					}
 				}
 
-				out = network.getOutput();
 //				System.out.println("Inputy: ");
 //				for (Neuron current : network.getLayers().get(0).getNeurons())
 //				{
 //					System.out.println(current.getOutput());
 //				}
 				System.out.println("Outputy: ");
-				for (Double current : out)
+				for (Double current : output)
 				{
 					System.out.println(current);
 				}
-				errors[i] = Math.abs(out[0] - trainingOutput[0]);
-				for (int k = 0; k < out.length; k++)
+				errors[i] = Math.abs(output[0] - trainingOutput[0]);
+				for (int k = 0; k < output.length; k++)
 				{
-					if (errors[i] < Math.abs(out[k] - trainingOutput[0]))
+					if (errors[i] < Math.abs(output[k] - trainingOutput[k]))
 					{
-						errors[i] = Math.abs(out[k] -trainingOutput[0]);
+						errors[i] = Math.abs(output[k] - trainingOutput[k]);
 					}
 				}
 			}

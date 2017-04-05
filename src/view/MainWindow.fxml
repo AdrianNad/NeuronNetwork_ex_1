@@ -19,6 +19,7 @@
           <TableColumn prefWidth="75.0" text="Neurons" />
         </columns>
       </TableView>
-      <Button fx:id="buttonLoadData" layoutX="18.0" layoutY="31.0" mnemonicParsing="false" onAction="#buttonLoadDataPressed" text="Load data" />
+      <Button fx:id="buttonLoadData" layoutX="88.0" layoutY="32.0" mnemonicParsing="false" onAction="#buttonLoadDataPressed" text="Load data" />
+      <Button fx:id="buttonAddBias" layoutX="14.0" layoutY="32.0" mnemonicParsing="false" onAction="#buttonAddBiasPressed" text="Add bias" />
    </children>
 </AnchorPane>

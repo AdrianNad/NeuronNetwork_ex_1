@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import model.Bias;
 import model.Input;
 import model.Layer;
 import model.Neuron;
@@ -20,8 +21,7 @@ import model.TrainingData;
 
 public class MainWindowController
 {
-	private List<Layer> listOfLayers = new ArrayList<Layer>();
-	private Teacher teacher = new Teacher(0.01, 1000000, 0.2);
+	private Teacher teacher = new Teacher(0.01, 100000, 0.6);
 	@FXML
 	private TextField textFieldNeuronsCount;
 	@FXML
@@ -31,6 +31,28 @@ public class MainWindowController
 	public NeuronNetwork network;
 	@FXML
 	public TableView<NeuronNetwork> tableViewNetwork;
+	@FXML
+	private Button buttonAddBias;
+	@FXML
+	public void buttonAddBiasPressed()
+	{
+		buttonAddBias.setDisable(true);
+		for (int i=1; i<network.getLayers().size(); i++)
+		{
+			Layer layer = network.getLayers().get(i);
+			for (int j=0; j<layer.getNeurons().size();j++)
+			{
+				Neuron neuron = layer.getNeurons().get(j);
+				Input inputBias = new Input(1);
+				Bias bias = new Bias();
+				inputBias.setInputNeuron(new Bias());
+				bias.addOutputConnection(inputBias);
+				neuron.addInputConnection(inputBias);
+				inputBias.setOutputNeuron(neuron);
+				neuron.getWeights().add(Math.random()-0.5);
+			}
+		}
+	}
 	@FXML
 	public void buttonAddPressed()
 	{
@@ -77,6 +99,17 @@ public class MainWindowController
 		inputLayer.setNeurons(neurons);
 		network.addLayer(inputLayer);
 		teacher.setNetwork(network);
+
+		// for debug
+//		textFieldNeuronsCount.setText("3");
+//		buttonAddPressed();
+//		textFieldNeuronsCount.setText("4");
+//		buttonAddPressed();
+//		if ( true)
+//		{
+//			System.out.println("HAHA");
+//		}
+
 	}
 	@FXML
 	public void buttonLoadDataPressed()
