@@ -190,6 +190,7 @@ public class Teacher
 				}
 			series.add(j,mseValue);
 			controller.setSeries(series);
+			System.out.println(maxError);
 			}
 		}
 }

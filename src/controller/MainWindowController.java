@@ -34,7 +34,7 @@ import model.TrainingData;
 
 public class MainWindowController
 {
-	private Teacher teacher = new Teacher(0.01, 25000, 0.4, 0.9);
+	private Teacher teacher = new Teacher(0.01, 25000, 0.6, 0.2);
 	@FXML
 	private TextField textFieldNeuronsCount;
 	@FXML
@@ -48,7 +48,7 @@ public class MainWindowController
 	private Button buttonAddBias;
 	@FXML
 	private ImageView imageViewChart;
-	private static XYSeries series = new XYSeries("Wykres bledow");
+	private static XYSeries series = new XYSeries("Wykres bledu sredniego");
 
 	public XYSeries getSeries()
 	{
@@ -84,7 +84,7 @@ public class MainWindowController
 	{
 		XYSeriesCollection dataSetCollection = new XYSeriesCollection();
 		dataSetCollection.addSeries(series);
-	    String chartTitle = "Wykres bledow";
+	    String chartTitle = "Wykres bledu sredniego w zaleznosci od epoki";
 	    String xAxisLabel = "Liczba epok";
 	    String yAxisLabel = "Liczba bledow";
 	    XYDataset dataset = dataSetCollection;
